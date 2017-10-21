@@ -6,6 +6,8 @@
     <string name="pic_btn">获取图片</string>
     <string name="dialog_title">设置头像</string>
     <string name="dialog_p_btn">相册</string>
-    <string name="dialog_n_btn">拍照</string>
+    <string name="dialog_bottom_import_from_local">从本地导入</string>
+    <string name="dialog_bottom_picture">拍照</string>
+    <string name="share_dialog_cancel">取消</string>
     
 </resources>

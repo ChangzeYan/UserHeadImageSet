@@ -6,24 +6,37 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+import yangtse.henu.userheadimageset.PhotoUtils;
+
+import yangtse.henu.userheadimageset.widget.BottomMenuDialog;
 
 public class CropActivity extends Activity {
 
+	private Button btn_dialog;
+	private BottomMenuDialog dialog;
+	private PhotoUtils photoUtils;
+	static public final int REQUEST_CODE_ASK_PERMISSIONS = 101;
+	private Context mContext;
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int CROP_FROM_CAMERA = 2;
 	private static final int PICK_FROM_FILE = 3;
@@ -36,6 +49,14 @@ public class CropActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_crop);
 		mImageView = (ImageView) findViewById(R.id.image_view);
+		btn_dialog=(Button)findViewById(R.id.dialog_btn);
+		mContext=this;
+		btn_dialog.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showPhotoDialog();
+			}
+		});
 	}
 
 	public void btnClick(View view) {
@@ -208,5 +229,51 @@ public class CropActivity extends Activity {
 			}
 		}
 
+	}
+	private void showPhotoDialog() {
+		if (dialog != null && dialog.isShowing()) {
+			dialog.dismiss();
+		}
+
+		dialog = new BottomMenuDialog(mContext);
+		dialog.setConfirmListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				if (dialog != null && dialog.isShowing()) {
+					dialog.dismiss();
+				}
+				if (Build.VERSION.SDK_INT >= 23) {
+					int checkPermission = checkSelfPermission(Manifest.permission.CAMERA);
+					if (checkPermission != PackageManager.PERMISSION_GRANTED) {
+						if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+							requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_ASK_PERMISSIONS);
+						} else {
+							new AlertDialog.Builder(mContext)
+									.setMessage("您需要在设置里打开相机权限。")
+									.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											//requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_ASK_PERMISSIONS);
+										}
+									})
+									.setNegativeButton("取消", null)
+									.create().show();
+						}
+						return;
+					}
+				}
+				photoUtils.takePicture(CropActivity.this);
+			}
+		});
+		dialog.setMiddleListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				if (dialog != null && dialog.isShowing()) {
+					dialog.dismiss();
+				}
+				photoUtils.selectPicture(CropActivity.this);
+			}
+		});
+		dialog.show();
 	}
 }

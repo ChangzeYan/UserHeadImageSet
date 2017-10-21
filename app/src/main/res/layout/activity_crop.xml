@@ -10,11 +10,14 @@
         android:layout_height="wrap_content"
         android:onClick="btnClick"
         android:text="@string/pic_btn" />
-
     <ImageView
         android:id="@+id/image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dialog_bottom"
+        android:id="@+id/dialog_btn"/>
 </LinearLayout>
