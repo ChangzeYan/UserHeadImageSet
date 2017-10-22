@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+     android:interpolator="@android:anim/linear_interpolator"
+    >
+    <!--fromXScale（浮点型） 属性为动画起始时X坐标上的缩放尺寸
+    fromYScale（浮点型） 属性为动画起始时Y坐标上的缩放尺寸
+    toXScale（浮点型） 属性为动画结束时X坐标上的缩放尺寸
+    toYScale（浮点型） 属性为动画结束时Y坐标上的缩放尺寸-->
+    <translate
+        android:duration="20000"
+        android:fromXDelta="-500"
+        android:fromYDelta="0"
+        android:repeatCount="1000"
+        android:repeatMode="reverse"
+        android:toXDelta="0"
+        android:toYDelta="0">
+    </translate>
+    <!--渐变透明度-->
+    <alpha
+
+        android:duration="20000"
+        android:fromAlpha="1.0"
+        android:repeatCount="1000"
+        android:repeatMode="reverse"
+        android:toAlpha="0.9" />
+
+
+
+</set>
